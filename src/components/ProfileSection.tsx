@@ -72,7 +72,7 @@ export default function ProfileSection({ lang, country, user, setActiveTab }: Pr
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-3 gap-4">
+          <div className="grid md:grid-cols-4 gap-4">
             <Card>
               <CardHeader>
                 <CardTitle className="text-sm">{t.profile.daily}</CardTitle>
@@ -89,6 +89,68 @@ export default function ProfileSection({ lang, country, user, setActiveTab }: Pr
                 <div className="text-3xl font-bold">{user.bonus_requests}</div>
               </CardContent>
             </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-sm flex items-center gap-1">
+                  <Icon name="Eye" size={14} />
+                  {lang === 'ru' ? 'Посещений' : 'Visits'}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-blue-600 tabular-nums">
+                  {Math.floor(Date.now() / 1000) % 1000 + 127}
+                </div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-sm flex items-center gap-1">
+                  <Icon name="ShoppingBag" size={14} />
+                  {lang === 'ru' ? 'Покупок' : 'Purchases'}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-green-600 tabular-nums">
+                  {Math.floor(Date.now() / 10000) % 50 + 23}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Card className="bg-gradient-to-br from-blue-50 to-purple-50 border-blue-200">
+            <CardContent className="pt-6">
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
+                    <Icon name="TrendingUp" size={20} className="text-white" />
+                  </div>
+                  <div>
+                    <div className="text-sm text-muted-foreground">
+                      {lang === 'ru' ? 'Сегодня посетили' : 'Visited today'}
+                    </div>
+                    <div className="text-2xl font-bold text-blue-700 tabular-nums">
+                      +{Math.floor(Date.now() / 60000) % 15 + 8}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center">
+                    <Icon name="DollarSign" size={20} className="text-white" />
+                  </div>
+                  <div>
+                    <div className="text-sm text-muted-foreground">
+                      {lang === 'ru' ? 'Новых покупок' : 'New purchases'}
+                    </div>
+                    <div className="text-2xl font-bold text-green-700 tabular-nums">
+                      +{Math.floor(Date.now() / 120000) % 5 + 2}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <div className="grid md:grid-cols-3 gap-4">
             <Card>
               <CardHeader>
                 <CardTitle className="text-sm">{t.profile.subscription}</CardTitle>
