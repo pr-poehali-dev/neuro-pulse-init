@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import { Language, translations } from '@/lib/translations';
 import { User } from '@/lib/types';
+import ManualPayment from './ManualPayment';
 
 interface PricingSectionProps {
   lang: Language;
@@ -41,38 +43,17 @@ const countryPrices = {
 export default function PricingSection({ lang, country, user }: PricingSectionProps) {
   const t = translations[lang];
   const prices = countryPrices[country as keyof typeof countryPrices];
+  const [manualPaymentOpen, setManualPaymentOpen] = useState(false);
+  const [selectedTariff, setSelectedTariff] = useState<{ type: string; amount: number } | null>(null);
 
-  const handlePurchase = async (tariffType: string, amount: number) => {
+  const handlePurchase = (tariffType: string, amount: number) => {
     if (!user) {
       toast.error(lang === 'ru' ? 'Войдите в систему' : 'Please log in');
       return;
     }
 
-    toast.loading(lang === 'ru' ? 'Перенаправление на оплату...' : 'Redirecting to payment...');
-
-    try {
-      const response = await fetch('https://functions.poehali.dev/fff27173-4bd6-4f1f-9c6f-c81df295fe5f', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          userId: user.id,
-          tariffType,
-          amount,
-          currency: prices.currency,
-          country 
-        }),
-      });
-
-      const data = await response.json();
-      
-      if (data.paymentUrl) {
-        window.location.href = data.paymentUrl;
-      } else {
-        toast.error(data.error || (lang === 'ru' ? 'Ошибка создания платежа' : 'Payment creation error'));
-      }
-    } catch (error) {
-      toast.error(lang === 'ru' ? 'Ошибка сервера' : 'Server error');
-    }
+    setSelectedTariff({ type: tariffType, amount });
+    setManualPaymentOpen(true);
   };
 
   return (
@@ -145,6 +126,18 @@ export default function PricingSection({ lang, country, user }: PricingSectionPr
           </CardContent>
         </Card>
       </div>
+
+      {selectedTariff && user && (
+        <ManualPayment
+          lang={lang}
+          open={manualPaymentOpen}
+          onOpenChange={setManualPaymentOpen}
+          tariffType={selectedTariff.type}
+          amount={selectedTariff.amount}
+          currency={prices.currency}
+          userId={user.id}
+        />
+      )}
     </div>
   );
 }

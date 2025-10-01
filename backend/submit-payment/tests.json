@@ -1,0 +1,51 @@
+{
+  "tests": [
+    {
+      "name": "Test submit payment request",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "userId": 2,
+        "tariffType": "advanced",
+        "amount": 299,
+        "currency": "₽",
+        "senderName": "Иван Петров",
+        "paymentProof": "5678"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true,
+        "payment": {
+          "userId": 2,
+          "tariffType": "advanced",
+          "status": "pending"
+        }
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Test missing required fields",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "userId": 2,
+        "tariffType": "starter"
+      },
+      "expectedStatus": 400,
+      "expectedBody": {
+        "error": "Missing required fields"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Test GET method",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "payments": []
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

@@ -9,7 +9,8 @@ import AdminStats from './AdminStats';
 import UIEditor from './UIEditor';
 import WithdrawFunds from './WithdrawFunds';
 import ProjectSecrets from './ProjectSecrets';
-import { toast } from 'sonner';
+import ManualPayment from './ManualPayment';
+import PendingPayments from './PendingPayments';
 
 interface ProfileSectionProps {
   lang: Language;
@@ -51,34 +52,14 @@ export default function ProfileSection({ lang, country, user, setActiveTab }: Pr
   const [uiEditorOpen, setUIEditorOpen] = useState(false);
   const [withdrawOpen, setWithdrawOpen] = useState(false);
   const [secretsOpen, setSecretsOpen] = useState(false);
+  const [paymentsOpen, setPaymentsOpen] = useState(false);
+  const [manualPaymentOpen, setManualPaymentOpen] = useState(false);
+  const [selectedTariff, setSelectedTariff] = useState<{ type: string; amount: number } | null>(null);
   const prices = countryPrices[country as keyof typeof countryPrices];
 
-  const handlePurchase = async (tariffType: string, amount: number) => {
-    toast.loading(lang === 'ru' ? 'Перенаправление на оплату...' : 'Redirecting to payment...');
-
-    try {
-      const response = await fetch('https://functions.poehali.dev/fff27173-4bd6-4f1f-9c6f-c81df295fe5f', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          userId: user.id,
-          tariffType,
-          amount,
-          currency: prices.currency,
-          country 
-        }),
-      });
-
-      const data = await response.json();
-      
-      if (data.paymentUrl) {
-        window.location.href = data.paymentUrl;
-      } else {
-        toast.error(data.error || (lang === 'ru' ? 'Ошибка создания платежа' : 'Payment creation error'));
-      }
-    } catch (error) {
-      toast.error(lang === 'ru' ? 'Ошибка сервера' : 'Server error');
-    }
+  const handlePurchase = (tariffType: string, amount: number) => {
+    setSelectedTariff({ type: tariffType, amount });
+    setManualPaymentOpen(true);
   };
 
   return (
@@ -227,6 +208,10 @@ export default function ProfileSection({ lang, country, user, setActiveTab }: Pr
                   <Icon name="Key" size={18} className="mr-2" />
                   {lang === 'ru' ? 'Секреты проекта' : 'Project Secrets'}
                 </Button>
+                <Button variant="outline" onClick={() => setPaymentsOpen(true)} className="border-green-500 text-green-600 hover:bg-green-50 md:col-span-2">
+                  <Icon name="Receipt" size={18} className="mr-2" />
+                  {lang === 'ru' ? 'Ожидающие платежи' : 'Pending Payments'}
+                </Button>
               </div>
             </div>
           )}
@@ -237,6 +222,19 @@ export default function ProfileSection({ lang, country, user, setActiveTab }: Pr
       <UIEditor lang={lang} open={uiEditorOpen} onOpenChange={setUIEditorOpen} />
       <WithdrawFunds lang={lang} open={withdrawOpen} onOpenChange={setWithdrawOpen} />
       <ProjectSecrets lang={lang} open={secretsOpen} onOpenChange={setSecretsOpen} />
+      <PendingPayments lang={lang} open={paymentsOpen} onOpenChange={setPaymentsOpen} />
+      
+      {selectedTariff && (
+        <ManualPayment
+          lang={lang}
+          open={manualPaymentOpen}
+          onOpenChange={setManualPaymentOpen}
+          tariffType={selectedTariff.type}
+          amount={selectedTariff.amount}
+          currency={prices.currency}
+          userId={user.id}
+        />
+      )}
     </div>
   );
 }
