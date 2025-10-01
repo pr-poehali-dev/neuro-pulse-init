@@ -21,7 +21,7 @@ export default function WithdrawFunds({ lang, open, onOpenChange }: WithdrawFund
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [loading, setLoading] = useState(false);
 
-  const availableBalance = 127450;
+  const availableBalance = 0;
 
   const handleWithdraw = async () => {
     if (!amount || parseFloat(amount) <= 0) {

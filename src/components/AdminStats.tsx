@@ -40,20 +40,20 @@ export default function AdminStats({ lang, open, onOpenChange }: AdminStatsProps
         setStats(data);
       } else {
         setStats({
-          totalUsers: 1247,
-          activeUsers: 892,
-          totalPayments: 356,
-          revenue: 127450,
-          totalRequests: 45623,
+          totalUsers: 1,
+          activeUsers: 1,
+          totalPayments: 0,
+          revenue: 0,
+          totalRequests: 0,
         });
       }
     } catch (error) {
       setStats({
-        totalUsers: 1247,
-        activeUsers: 892,
-        totalPayments: 356,
-        revenue: 127450,
-        totalRequests: 45623,
+        totalUsers: 1,
+        activeUsers: 1,
+        totalPayments: 0,
+        revenue: 0,
+        totalRequests: 0,
       });
     } finally {
       setLoading(false);

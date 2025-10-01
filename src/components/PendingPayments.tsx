@@ -27,20 +27,7 @@ interface Payment {
 }
 
 export default function PendingPayments({ lang, open, onOpenChange }: PendingPaymentsProps) {
-  const [payments, setPayments] = useState<Payment[]>([
-    {
-      id: '1',
-      userId: 2,
-      userName: 'user_123',
-      tariffType: 'advanced',
-      amount: 299,
-      currency: '₽',
-      senderName: 'Иван Петров',
-      paymentProof: '5678',
-      status: 'pending',
-      createdAt: new Date().toISOString()
-    }
-  ]);
+  const [payments, setPayments] = useState<Payment[]>([]);
 
   const handleApprove = (paymentId: string) => {
     setPayments(payments.map(p => 

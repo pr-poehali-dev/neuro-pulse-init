@@ -18,6 +18,7 @@ export default function Index() {
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
   const [paymentSuccessOpen, setPaymentSuccessOpen] = useState(false);
+  const [guestRequests, setGuestRequests] = useState(10);
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -109,7 +110,13 @@ export default function Index() {
         {activeTab === 'home' && (
           <div className="space-y-16">
             <HeroSection lang={lang} user={user} setRegisterOpen={setRegisterOpen} />
-            <AIChat lang={lang} user={user} setUser={setUser as (user: User) => void} />
+            <AIChat 
+              lang={lang} 
+              user={user} 
+              setUser={setUser as (user: User) => void}
+              guestRequests={guestRequests}
+              setGuestRequests={setGuestRequests}
+            />
           </div>
         )}
 
