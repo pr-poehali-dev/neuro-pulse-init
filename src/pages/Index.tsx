@@ -92,7 +92,7 @@ export default function Index() {
         )}
 
         {activeTab === 'profile' && user && (
-          <ProfileSection lang={lang} user={user} />
+          <ProfileSection lang={lang} country={country} user={user} setActiveTab={setActiveTab} />
         )}
       </main>
 
