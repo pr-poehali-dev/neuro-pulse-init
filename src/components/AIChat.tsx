@@ -39,7 +39,7 @@ export default function AIChat({ lang, user, setUser }: AIChatProps) {
     setIsLoading(true);
 
     try {
-      const response = await fetch('https://functions.poehali.dev/6e0a0309-4aa9-4c07-8931-d021be6617cb', {
+      const response = await fetch('https://functions.poehali.dev/d3255040-6ca7-4554-bb94-958c775d4546', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 

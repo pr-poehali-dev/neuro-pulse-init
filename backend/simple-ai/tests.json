@@ -1,0 +1,51 @@
+{
+  "tests": [
+    {
+      "name": "Test greeting in Russian",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "message": "Привет",
+        "userId": 1,
+        "language": "ru"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true,
+        "response": "string"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Test greeting in English",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "message": "Hello",
+        "userId": 1,
+        "language": "en"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true,
+        "response": "string"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Test empty message",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "message": "",
+        "userId": 1,
+        "language": "ru"
+      },
+      "expectedStatus": 400,
+      "expectedBody": {
+        "error": "Message is required"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
