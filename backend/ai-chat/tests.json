@@ -1,0 +1,32 @@
+{
+  "tests": [
+    {
+      "name": "Test AI chat endpoint",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "message": "Привет, как дела?",
+        "userId": 1,
+        "language": "ru"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "response": "string"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Test missing message",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "userId": 1
+      },
+      "expectedStatus": 400,
+      "expectedBody": {
+        "error": "Message is required"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
