@@ -31,8 +31,8 @@ export default function Index() {
         id: 1,
         username: 'ceo_egor_selitsky_2025',
         role: 'admin',
-        daily_requests_remaining: 999999,
-        bonus_requests: 999999,
+        daily_requests_remaining: 0,
+        bonus_requests: 0,
         subscription_type: 'unlimited',
       });
       setLoginOpen(false);
@@ -72,7 +72,7 @@ export default function Index() {
       } else if (tariff === 'advanced') {
         requestsToAdd = 40;
       } else if (tariff === 'unlimited') {
-        requestsToAdd = 999999;
+        requestsToAdd = 100;
         newSubscription = 'unlimited';
       }
       
