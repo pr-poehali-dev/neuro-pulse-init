@@ -135,7 +135,7 @@ export default function Index() {
 
       <footer className="border-t mt-20 py-8 bg-white/50 backdrop-blur-sm">
         <div className="container mx-auto px-4 text-center text-muted-foreground">
-          <p>© 2025 NeuroPulse. {lang === 'ru' ? 'Все права защищены.' : 'All rights reserved.'}</p>
+          <p>© 2025 NeuroPulse.</p>
         </div>
       </footer>
 
