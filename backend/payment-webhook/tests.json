@@ -1,0 +1,65 @@
+{
+  "tests": [
+    {
+      "name": "Test successful payment webhook for starter tariff",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "object": {
+          "status": "succeeded",
+          "metadata": {
+            "userId": "123",
+            "tariffType": "starter"
+          }
+        }
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true,
+        "userId": "string",
+        "tariffType": "string",
+        "requestsAdded": "number"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Test successful payment webhook for unlimited tariff",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "object": {
+          "status": "succeeded",
+          "metadata": {
+            "userId": "456",
+            "tariffType": "unlimited"
+          }
+        }
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true,
+        "subscriptionType": "unlimited"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Test pending payment webhook",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "object": {
+          "status": "pending",
+          "metadata": {
+            "userId": "789",
+            "tariffType": "advanced"
+          }
+        }
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "status": "ignored"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

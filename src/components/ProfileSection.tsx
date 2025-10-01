@@ -8,6 +8,7 @@ import { User } from '@/lib/types';
 import AdminStats from './AdminStats';
 import UIEditor from './UIEditor';
 import WithdrawFunds from './WithdrawFunds';
+import ProjectSecrets from './ProjectSecrets';
 import { toast } from 'sonner';
 
 interface ProfileSectionProps {
@@ -49,6 +50,7 @@ export default function ProfileSection({ lang, country, user, setActiveTab }: Pr
   const [statsOpen, setStatsOpen] = useState(false);
   const [uiEditorOpen, setUIEditorOpen] = useState(false);
   const [withdrawOpen, setWithdrawOpen] = useState(false);
+  const [secretsOpen, setSecretsOpen] = useState(false);
   const prices = countryPrices[country as keyof typeof countryPrices];
 
   const handlePurchase = async (tariffType: string, amount: number) => {
@@ -208,7 +210,7 @@ export default function ProfileSection({ lang, country, user, setActiveTab }: Pr
                 <Icon name="Shield" size={20} />
                 {t.profile.admin}
               </h3>
-              <div className="grid md:grid-cols-3 gap-4">
+              <div className="grid md:grid-cols-2 gap-4">
                 <Button variant="outline" onClick={() => setStatsOpen(true)}>
                   <Icon name="Users" size={18} className="mr-2" />
                   {t.profile.stats}
@@ -221,6 +223,10 @@ export default function ProfileSection({ lang, country, user, setActiveTab }: Pr
                   <Icon name="Wallet" size={18} className="mr-2" />
                   {t.profile.withdraw}
                 </Button>
+                <Button variant="outline" onClick={() => setSecretsOpen(true)} className="border-orange-500 text-orange-600 hover:bg-orange-50">
+                  <Icon name="Key" size={18} className="mr-2" />
+                  {lang === 'ru' ? 'Секреты проекта' : 'Project Secrets'}
+                </Button>
               </div>
             </div>
           )}
@@ -230,6 +236,7 @@ export default function ProfileSection({ lang, country, user, setActiveTab }: Pr
       <AdminStats lang={lang} open={statsOpen} onOpenChange={setStatsOpen} />
       <UIEditor lang={lang} open={uiEditorOpen} onOpenChange={setUIEditorOpen} />
       <WithdrawFunds lang={lang} open={withdrawOpen} onOpenChange={setWithdrawOpen} />
+      <ProjectSecrets lang={lang} open={secretsOpen} onOpenChange={setSecretsOpen} />
     </div>
   );
 }

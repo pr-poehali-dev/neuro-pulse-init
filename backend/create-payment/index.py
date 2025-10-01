@@ -78,8 +78,8 @@ def handler(event, context):
         'capture': True,
         'description': f'NeuroPulse {tariff_type} tariff',
         'metadata': {
-            'user_id': user_id,
-            'tariff_type': tariff_type,
+            'userId': str(user_id),
+            'tariffType': tariff_type,
             'country': country
         }
     }

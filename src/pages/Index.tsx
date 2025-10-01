@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { Language } from '@/lib/translations';
 import { User } from '@/lib/types';
@@ -8,6 +8,7 @@ import AIChat from '@/components/AIChat';
 import PricingSection from '@/components/PricingSection';
 import FounderSection from '@/components/FounderSection';
 import ProfileSection from '@/components/ProfileSection';
+import PaymentSuccess from '@/components/PaymentSuccess';
 
 export default function Index() {
   const [lang, setLang] = useState<Language>('ru');
@@ -16,6 +17,7 @@ export default function Index() {
   const [activeTab, setActiveTab] = useState('home');
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
+  const [paymentSuccessOpen, setPaymentSuccessOpen] = useState(false);
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -55,6 +57,34 @@ export default function Index() {
     setRegisterOpen(false);
     toast.success(lang === 'ru' ? 'Регистрация успешна! +5 бонусных запросов' : 'Registration successful! +5 bonus requests');
   };
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tariff = params.get('tariff');
+    
+    if (tariff && user) {
+      let requestsToAdd = 0;
+      let newSubscription = user.subscription_type;
+      
+      if (tariff === 'starter') {
+        requestsToAdd = 20;
+      } else if (tariff === 'advanced') {
+        requestsToAdd = 40;
+      } else if (tariff === 'unlimited') {
+        requestsToAdd = 999999;
+        newSubscription = 'unlimited';
+      }
+      
+      setUser({
+        ...user,
+        bonus_requests: user.bonus_requests + requestsToAdd,
+        subscription_type: newSubscription,
+      });
+      
+      setPaymentSuccessOpen(true);
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  }, [user]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50">
@@ -101,6 +131,16 @@ export default function Index() {
           <p>© 2025 NeuroPulse. {lang === 'ru' ? 'Все права защищены.' : 'All rights reserved.'}</p>
         </div>
       </footer>
+
+      {paymentSuccessOpen && (
+        <PaymentSuccess 
+          lang={lang} 
+          onClose={() => {
+            setPaymentSuccessOpen(false);
+            setActiveTab('profile');
+          }} 
+        />
+      )}
     </div>
   );
 }
